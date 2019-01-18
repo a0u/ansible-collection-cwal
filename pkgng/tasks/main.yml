@@ -1,0 +1,41 @@
+---
+
+- name: 'create repos directory'
+  file:
+    path: '{{ pkgng_repos_dir }}'
+    state: 'directory'
+    recurse: true
+    owner: 'root'
+    group: 'wheel'
+  when: 'pkgng_init is not defined'
+  tags: 'pkgng'
+
+- name: 'copy repo configuration'
+  template:
+    src: 'repo.conf.j2'
+    dest: '{{ pkgng_repos_dir }}/{{ item.key }}.conf'
+    owner: 'root'
+    group: 'wheel'
+    mode: 0444
+  loop: '{{ pkgng_repos | dict2items }}'
+  when: 'pkgng_init is not defined'
+  tags: 'pkgng'
+
+- name: 'copy repo public keys'
+  copy:
+    src: '{{ pkgng_srcdir }}/{{ item.pubkey | basename }}'
+    dest: '{{ item.pubkey }}'
+    owner: 'root'
+    group: 'wheel'
+    mode: 0444
+  loop: '{{ pkgng_repos.values() | list }}'
+  when: '(item.pubkey is defined) and (pkgng_srcdir is string) and (pkgng_init is not defined)'
+  tags: 'pkgng'
+
+- name: 'install packages'
+  pkgng:
+    name: '{{ pkgs }}'
+    state: 'present'
+  when: 'pkgs'
+  register: 'pkgng_init'
+  tags: 'pkgng'

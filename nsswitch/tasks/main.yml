@@ -1,0 +1,26 @@
+---
+
+- name: 'manage group database'
+  group:
+    name: '{{ item.key }}'
+    state: '{{ item.value.state | default("present") }}'
+    gid: '{{ item.value.gid | default(omit) }}'
+    system: '{{ item.value.system | default(false) }}'
+  loop: '{{ nss_group | dict2items }}'
+  tags: 'nsswitch'
+
+- name: 'manage passwd database'
+  user:
+    name: '{{ item.key }}'
+    state: '{{ item.value.state | default("present") }}'
+    uid: '{{ item.value.uid | default(omit) }}'
+    group: '{{ item.value.group | default(omit) }}'
+    groups: '{{ item.value.groups | default() | unique | join(",") or omit }}'
+    comment: '{{ item.value.comment | default(omit) }}'
+    home: '{{ item.value.home | default(omit) }}'
+    create_home: '{{ item.value.create_home | default(true) }}'
+    shell: '{{ item.value.shell | default(omit) }}'
+    password: '{{ item.value.password | default(omit) }}'
+    system: '{{ item.value.system | default(false) }}'
+  loop: '{{ nss_passwd | dict2items }}'
+  tags: 'nsswitch'

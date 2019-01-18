@@ -1,0 +1,5 @@
+---
+
+- name: '{{ timezone }}'
+  timezone:
+    name: '{{ timezone }}'

@@ -1,0 +1,93 @@
+#!/usr/local/bin/python2
+
+ANSIBLE_METADATA = {
+    'metadata_version': '1.0',
+    'status': ['preview'],
+    'supported_by': 'community'
+}
+
+DOCUMENTATION = '''
+module: sysrc
+author: "Albert Ou (@a0u)"
+version_added: "1.0"
+short_description: Safely edit system rc files
+description:
+    - "The sysrc(8) utility retrieves rc.conf(5) variables from the
+      collection of system rc files and enables values to be changed
+      safely and effectively."
+options:
+    state:
+        required: false
+        default: present
+        choices: [ present, absent, append, subtract ]
+        description:
+            - Action to apply to the variable(s)
+    conf:
+        required: false
+        description:
+            - Dict with variable names as keys and their values
+'''
+
+EXAMPLES = '''
+- name: Ensure sshd is enabled
+  sysrc:
+    state: present
+    conf:
+      sshd_enable: true
+'''
+
+RETURN = ''' # '''
+
+from ansible.module_utils.basic import AnsibleModule
+
+def main():
+    module = AnsibleModule(
+        argument_spec = dict(
+            conf = dict(type='dict', required=True),
+            state = dict(
+                type='str',
+                default='present',
+                choices=[ 'present', 'absent', 'append', 'subtract' ]
+            ),
+            file = dict(type='str', default='')
+        ),
+        supports_check_mode=True
+    )
+
+    sysrc = module.get_bin_path('sysrc', True)
+
+    args = []
+    file = module.params['file']
+    if file:
+        args.append('-f')
+        args.append(file)
+
+    state = module.params['state']
+    conf = module.params['conf']
+
+    def rcvars(fmt):
+        args.extend(fmt.format(k, ('YES' if v else 'NO') if (type(v) == bool) else v)
+            for (k, v) in conf.items())
+
+    if state == 'present':
+        rcvars('{}={}')
+    elif state == 'append':
+        rcvars('{}+={}')
+    elif state == 'subtract':
+        rcvars('{}-={}')
+    else: # state == 'absent'
+        args.append('-x')
+        args.extend(conf.keys())
+
+    (rc, _, _) = module.run_command([sysrc, '-c'] + args)
+    changed = (rc != 0)
+    if changed and (not module.check_mode):
+        args.insert(0, sysrc)
+        (rc, _, err) = module.run_command(args)
+        if rc != 0:
+            module.fail_json(msg='Failed to edit rc file', rc=rc, err=err)
+
+    module.exit_json(changed=changed)
+
+if __name__ == '__main__':
+    main()

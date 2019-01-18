@@ -1,0 +1,6 @@
+{{ item.key }}: {
+{% for k, v in item.value.items() %}
+	{{ k }}: {{ v|to_json }}{% if not loop.last %},{% endif %}
+
+{% endfor %}
+}

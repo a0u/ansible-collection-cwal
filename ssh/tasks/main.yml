@@ -1,0 +1,26 @@
+---
+
+- name: 'populate ssh authorized_keys'
+  authorized_key:
+    user: '{{ item.user | mandatory }}'
+    state: '{{ item.state | default("present") }}'
+    key: "{{ item.key if ((item.key | mandatory) is string) else (item.key | unique | join('\n')) }}"
+    key_options: '{{ item.opts | default() | unique | join(",") or omit }}'
+  loop: '{{ ssh_authorized_keys }}'
+  tags: 'ssh'
+
+- name: 'gather ssh public keys'
+  local_action: 'command ssh-keyscan {{ item }}'
+  register: 'ssh_keyscan'
+  loop: '{{ ssh_known_hosts }}'
+  become: false
+  run_once: true
+  tags: 'ssh'
+
+- name: 'populate ssh known_hosts'
+  known_hosts:
+    path: '/etc/ssh/ssh_known_hosts'
+    name: '{{ item.item }}'
+    key: '{{ item.stdout }}'
+  loop: '{{ ssh_keyscan.results if ssh_keyscan.changed else [] }}'
+  tags: 'ssh'

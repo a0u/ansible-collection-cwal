@@ -1,0 +1,7 @@
+---
+
+pkgng_repos: {}
+pkgng_repos_dir: '/usr/local/etc/pkg/repos'
+pkgng_srcdir: null
+
+pkgs: []

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+test -n "$1" || exit
+
+umask 0077
+openssl genrsa -out "${1}.key" 4096
+openssl rsa -in "${1}.key" -pubout -out "${1}.pem"
+ansible-vault encrypt "${1}.key"

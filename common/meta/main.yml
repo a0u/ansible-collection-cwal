@@ -1,0 +1,12 @@
+---
+
+dependencies:
+  - role: 'timezone'
+  - role: 'fstab'
+  - role: 'nsswitch'
+  - role: 'files'
+  - role: 'rc'
+    when: 'ansible_distribution == "FreeBSD"'
+  - role: 'pkgng'
+    when: 'ansible_distribution == "FreeBSD" and not (bootstrap | default(false))'
+  - role: 'ssh'

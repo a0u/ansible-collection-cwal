@@ -1,0 +1,13 @@
+---
+
+- name: 'manage filesystem mounts'
+  mount:
+    state: '{{ item.value.state | default("present") }}'
+    path: '{{ item.key }}'
+    src: '{{ item.value.src | default(omit) }}'
+    fstype: '{{ item.value.fstype | default(omit) }}'
+    opts: '{{ item.value.opts | default() | unique | join(",") or omit }}'
+    dump: '{{ item.value.dump | default(0) }}'
+    passno: '{{ item.value.passno | default(0) }}'
+  loop: '{{ fstab | dict2items }}'
+  tags: 'fstab'
