@@ -1,0 +1,37 @@
+---
+
+- name: 'create {{ wrkdirprefix }}'
+  file:
+    path: '{{ wrkdirprefix }}'
+    state: 'directory'
+    recurse: true
+    owner: 'root'
+    group: 'wheel'
+  tags: 'ports'
+
+- name: 'mount {{ wrkdirprefix }}'
+  mount:
+    path: '{{ wrkdirprefix }}'
+    state: 'mounted'
+    src: 'tmpfs'
+    fstype: 'tmpfs'
+    opts: 'rw,nosuid,late'
+  tags: 'ports'
+
+- name: 'create system make.conf(5)'
+  template:
+    src: 'make.conf.j2'
+    dest: '/etc/make.conf'
+    owner: 'root'
+    group: 'wheel'
+    mode: 0444
+  tags: 'ports'
+
+- name: 'checkout ports(7) tree'
+  subversion:
+    repo: 'https://svn.freebsd.org/ports/head'
+    dest: '{{ portsdir }}'
+    force: true
+    in_place: true
+    executable: 'svnlite'
+  tags: 'ports'

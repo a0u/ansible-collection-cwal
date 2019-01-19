@@ -1,0 +1,5 @@
+---
+
+portsdir: '/usr/ports'
+wrkdirprefix: '/usr/obj'
+distdir: '{{ wrkdirprefix }}/distfiles'

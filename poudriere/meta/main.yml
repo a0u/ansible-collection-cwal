@@ -1,0 +1,9 @@
+---
+
+dependencies:
+  - role: 'ports'
+  - role: 'pkgng'
+    pkgs:
+      - 'poudriere'
+      - 'git'
+    when: 'not (bootstrap | default(false))'

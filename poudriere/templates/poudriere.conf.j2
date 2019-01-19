@@ -1,0 +1,31 @@
+{%- if poudriere_zfs | default() -%}
+ZPOOL={{ poudriere_zpool | mandatory }}
+ZROOTFS={{ poudriere_zrootfs | mandatory }}
+{% else -%}
+NO_ZFS=yes
+{% endif %}
+FREEBSD_HOST=https://download.freebsd.org
+RESOLV_CONF=/etc/resolv.conf
+BASEFS={{ poudriere_basefs | mandatory }}
+POUDRIERE_DATA=${BASEFS}/data
+
+USE_PORTLINT=no
+USE_TMPFS=all
+
+{% if poudriere_key | default() %}
+PKG_REPO_SIGNING_KEY=${POUDRIERE_DATA}/{{ poudriere_key | basename }}
+{% endif %}
+
+DISTFILES_CACHE={{ distdir | default(wrkdirprefix + '/distfiles') }}
+
+CCACHE_DIR=${BASEFS}/ccache
+CCACHE_DIR_NON_ROOT_SAFE=yes
+
+BUILD_AS_NON_ROOT=yes
+
+CHECK_CHANGED_OPTIONS=verbose
+CHECK_CHANGED_DEPS=yes
+
+SAVE_WRKDIR=yes
+
+NOHANG_TIME=14400

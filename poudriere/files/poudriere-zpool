@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -ex
+
+pool=${1}
+dev=${2}
+label='poudriere'
+
+if ! { zpool list -H "${pool}" >/dev/null ||
+	zpool import -f "${pool}" ; } ; then
+
+	gpart create -s gpt "${dev}"
+	gpart add -a 1M -t freebsd-zfs -l "${label}" "${dev}"
+	zpool create -m none -O atime=off -O canmount=off -O checksum=sha256 -O compression=lz4 "${pool}" "/dev/gpt/${label}"
+fi

@@ -1,0 +1,154 @@
+---
+
+# poudriere filesystem setup
+
+- name: 'initialize ZFS pool'
+  script: 'poudriere-zpool {{ poudriere_zpool | mandatory }} {{ poudriere_dev | mandatory }}'
+  when: 'poudriere_zfs'
+  register: 'poudriere_zpool_init'
+  tags:
+    - 'poudriere'
+    - 'poudriere:fs'
+
+- debug:
+    var: 'poudriere_zpool_init.stdout_lines'
+  tags: 'poudriere:fs'
+
+- name: 'create ZFS datasets'
+  zfs:
+    name: '{{ poudriere_zpool | mandatory }}{{ poudriere_zrootfs | mandatory }}/{{ item[0] }}'
+    state: 'present'
+    extra_zfs_properties:
+      mountpoint: '{{ poudriere_basefs | mandatory }}/{{ item[0] }}'
+      compression: '{{ item[1] }}'
+  loop:
+    - [ 'data', 'lz4' ]
+    - [ 'ccache', false ]
+  tags:
+    - 'poudriere'
+    - 'poudriere:fs'
+
+# poudriere configuration setup
+
+- name: 'install git'
+  command: 'pkg -R /etc/pkg install -r FreeBSD -y git-lite'
+  args:
+    creates: '/usr/local/bin/git'
+  when: 'poudriere_etc_git | default()'
+  tags:
+    - 'poudriere'
+    - 'poudriere:conf'
+
+- name: 'clone poudriere.d repository'
+  git:
+    repo: '{{ poudriere_etc_git }}'
+    dest: '/usr/local/etc/poudriere.d'
+    clone: true
+    force: true
+  when: 'poudriere_etc_git | default()'
+  tags:
+    - 'poudriere'
+    - 'poudriere:conf'
+
+- name: 'install poudriere'
+  command: 'pkg -R /etc/pkg install -r FreeBSD -y poudriere'
+  args:
+    creates: '/usr/local/bin/poudriere'
+  tags: 'poudriere'
+
+- name: 'install poudriere.conf'
+  template:
+    src: 'poudriere.conf.j2'
+    dest: '/usr/local/etc/poudriere.conf'
+    owner: 'root'
+    group: 'wheel'
+    mode: 0444
+  tags:
+    - 'poudriere'
+    - 'poudriere:conf'
+
+- name: 'install poudriere make.conf(5)'
+  copy:
+    src: 'make.conf'
+    dest: '/usr/local/etc/poudriere.d/make.conf'
+    owner: 'root'
+    group: 'wheel'
+    mode: 0444
+  when: 'not poudriere_etc_git'
+  tags:
+    - 'poudriere'
+    - 'poudriere:conf'
+
+# poudriere environment setup
+
+- name: 'create poudriere ports tree'
+  command: 'poudriere ports -c -f none -M {{ portsdir }} -p {{ poudriere_portstree}} -m null'
+  args:
+    creates: '/usr/local/etc/poudriere.d/ports/{{ poudriere_portstree }}'
+  tags: 'poudriere'
+
+- set_fact:
+    poudriere_jail: '{{ ansible_distribution_version | replace(".", "-") }}_{{ ansible_architecture }}'
+  tags:
+    - 'poudriere'
+    - 'poudriere:jail'
+
+- name: 'create poudriere jail'
+  command: 'poudriere jail -c -j {{ poudriere_jail }} -v {{ ansible_distribution_version }}-RELEASE -a {{ ansible_architecture }} -m http'
+  args:
+    creates: '{{ poudriere_basefs }}/jails/{{ poudriere_jail | mandatory }}/COPYRIGHT'
+  register: 'poudriere_jail_init'
+  tags:
+    - 'poudriere'
+    - 'poudriere:jail'
+
+- debug:
+    var: 'poudriere_jail_init.stdout_lines'
+  tags: 'poudriere:jail'
+
+- name: 'create package data directory'
+  file:
+    path: '{{ poudriere_basefs }}/data/packages'
+    state: 'directory'
+    recurse: true
+    owner: 'root'
+    group: 'wheel'
+  tags: 'poudriere'
+
+- name: 'create package ABI symlink'
+  file:
+    src: '{{ poudriere_jail | mandatory }}-{{ poudriere_portstree }}'
+    path: '{{ poudriere_basefs }}/data/packages/{{ ansible_distribution }}:{{ ansible_distribution_major_version }}:{{ ansible_architecture }}'
+    state: 'link'
+    force: true
+  tags: 'poudriere:jail'
+
+- name: 'copy package signing key'
+  copy:
+    src: '{{ poudriere_key }}'
+    dest: '{{ poudriere_keydir | mandatory }}/{{ poudriere_key | basename }}'
+    owner: 'root'
+    group: 'wheel'
+    mode: 0400
+  when: 'poudriere_key | default()'
+  tags: 'poudriere'
+
+- name: 'chown ccache directory'
+  file:
+    path: '{{ poudriere_basefs | mandatory }}/ccache'
+    state: 'directory'
+    owner: 'nobody'
+    group: 'nobody'
+  tags: 'poudriere'
+
+- name: 'install s3cmd configuration file'
+  template:
+    src: 's3cfg.j2'
+    dest: '/root/.s3cfg'
+    owner: 'root'
+    group: 'wheel'
+    mode: 0400
+  when: 'aws_secret_key | default()'
+  tags:
+    - 'poudriere'
+    - 'poudriere:s3'

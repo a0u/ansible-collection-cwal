@@ -1,0 +1,8 @@
+#
+# make.conf(5): system build information
+#
+
+WRKDIRPREFIX={{ wrkdirprefix }}
+{% if distdir | default() %}
+DISTDIR={{ distdir }}
+{% endif %}

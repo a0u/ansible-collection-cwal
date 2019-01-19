@@ -1,0 +1,11 @@
+---
+
+poudriere_basefs: '/usr/local/poudriere'
+poudriere_portstree: 'default'
+poudriere_zfs: false
+poudriere_dev: null
+poudriere_zpool: 'tank'
+poudriere_zrootfs: '/poudriere'
+poudriere_key: null
+poudriere_keydir: '{{ poudriere_basefs }}/data'
+poudriere_etc_git: null
