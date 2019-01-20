@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# $FreeBSD: $
+#
+
+# PROVIDE: gddns
+# REQUIRE: NETWORKING
+# BEFORE: hostname
+
+. /etc/rc.subr
+
+name="gddns"
+desc="Google Dynamic DNS record update"
+rcvar="${name}_enable"
+
+start_cmd="gddns_start"
+stop_cmd=":"
+
+: ${gddns_enable="NO"}
+: ${gddns_hostname="$(hostname -f)"}
+: ${gddns_config="/usr/local/etc/${name}.conf"}
+
+required_files="${gddns_config}"
+
+gddns_start()
+{
+	local _user _pass _url _rc
+	{
+		read -r _user
+		read -r _pass
+	} < "${gddns_config}"
+
+	check_startmsgs && echo -n "Updating Google DDNS: ${gddns_hostname} "
+	_url="https://${_user}:${_pass}@domains.google.com/nic/update"
+	if [ -x /usr/local/bin/curl ] ; then
+		/usr/local/bin/curl -s -d "hostname=${gddns_hostname}" "${_url}"
+	elif [ -x /usr/local/bin/wget ] ; then
+		/usr/local/bin/wget -q -O - --post-data "hostname=${gddns_hostname}" "${_url}"
+	else
+		echo
+		err 1 'no supported HTTPS client'
+	fi
+	_rc=$?
+	echo
+	return ${_rc}
+}
+
+load_rc_config $name
+run_rc_command "$1"

@@ -1,0 +1,30 @@
+---
+
+- name: 'install rc(8) script'
+  copy:
+    src: 'gddns'
+    dest: '/usr/local/etc/rc.d/gddns'
+    owner: 'root'
+    group: 'wheel'
+    mode: 0555
+  tags: 'gddns'
+
+- name: 'set rc.conf(5) variables'
+  sysrc:
+    file: '/usr/local/etc/rc.conf.d/gddns'
+    conf:
+      gddns_enable: true
+      gddns_hostname: '{{ gddns_hostname | mandatory }}'
+  when: '(gddns_hostname | default()) and not (gddns_hostname | ipaddr)'
+  tags: 'gddns'
+
+- name: 'set Google DDNS credentials'
+  copy:
+    content: |
+      {{ gddns_username | mandatory }}
+      {{ gddns_password | mandatory }}
+    dest: '/usr/local/etc/gddns.conf'
+    owner: 'root'
+    group: 'wheel'
+    mode: 0400
+  tags: 'gddns'

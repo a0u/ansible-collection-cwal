@@ -1,0 +1,3 @@
+---
+
+gddns_hostname: '{{ inventory_hostname }}'
