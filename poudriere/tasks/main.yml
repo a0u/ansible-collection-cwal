@@ -140,15 +140,3 @@
     owner: 'nobody'
     group: 'nobody'
   tags: 'poudriere'
-
-- name: 'install s3cmd configuration file'
-  template:
-    src: 's3cfg.j2'
-    dest: '/root/.s3cfg'
-    owner: 'root'
-    group: 'wheel'
-    mode: 0400
-  when: 'aws_secret_key | default()'
-  tags:
-    - 'poudriere'
-    - 'poudriere:s3'
