@@ -1,0 +1,158 @@
+# Example from sudoers(5)
+
+sudo:
+  defaults:
+    general:
+      - 'env_keep += "DISPLAY HOME"'
+      - 'syslog = auth'
+    users:
+      FULLTIMERS: '!lecture'
+      millert: '!authenticate'
+    hosts:
+      SERVERS:
+        - log_year
+        - 'logfile = /var/log/sudo.log'
+    runas:
+      root: '!set_logname'
+
+  aliases:
+    hosts:
+      SPARC:
+        - bigtime
+        - eclipse
+        - moet
+        - anchor
+      SGI:
+        - grolsch
+        - dandelion
+        - black
+      ALPHA:
+        - widget
+        - thalamus
+        - foobar
+      HPA:
+        - boa
+        - nag
+        - python
+      CUNETS: 128.137.0.0/255.255.0.0
+      CSNETS:
+        - 128.138.243.0
+        - 128.138.204.0/24
+        - 128.138.242.0
+      SERVERS:
+        - master
+        - mail
+        - www
+        - ns
+      CDROM:
+        - orion
+        - perseus
+        - hercules
+    users:
+      FULLTIMERS:
+        - millert
+        - mikef
+        - dowdy
+      PARTIMERS:
+        - bostley
+        - jwfox
+        - crawl
+      WEBMASTERS:
+        - will
+        - wendy
+        - wim
+    commands:
+      DUMPS:
+        - /usr/bin/mt
+        - /usr/sbin/dump
+        - /usr/sbin/rdump
+        - /usr/sbin/restore
+        - /usr/sbin/rrestore
+        - 'sha224:0GomF8mNN3wlDt1HD9XldjJ3SNgpFdbjO1+NsQ== /home/operator/bin/start_backups'
+      KILL: /usr/bin/kill
+      PRINTING:
+        - /usr/sbin/lpc
+        - /usr/bin/lprm
+      SHUTDOWN: /usr/sbin/shutdown
+      HALT: /usr/sbin/halt
+      REBOOT: /usr/sbin/reboot
+      SHELLS:
+        - /usr/bin/sh
+        - /usr/bin/csh
+        - /usr/bin/ksh
+        - /usr/local/bin/tcsh
+        - /usr/bin/rsh
+        - /usr/local/bin/zsh
+      SU: /usr/bin/su
+      PAGERS:
+        - /usr/bin/more
+        - /usr/bin/pg
+        - /usr/bin/less
+
+  userspec:
+    - root:
+      - ALL: '(ALL) ALL'
+    - '%wheel':
+      - ALL: '(ALL) ALL'
+    - FULLTIMERS:
+      - ALL: 'NOPASSWD: ALL'
+    - PARTIMERS:
+      - ALL: ALL
+    - jack:
+      - CSNETS: ALL
+    - lisa:
+      - CUNETS: ALL
+    - operator:
+      - ALL:
+        - DUMPS
+        - KILL
+        - SHUTDOWN
+        - HALT
+        - REBOOT
+        - PRINTING
+        - sudoedit /etc/printcap
+        - /usr/oper/bin
+    - joe:
+      - ALL: /usr/bin/su operator
+    - pete:
+      - HPPA:
+        - '/usr/bin/passwd [A-Za-z]*'
+        - '!/usr/bin/passwd root'
+    - '%opers':
+      - ALL: '(: ADMINGRP) /usr/sbin/'
+    - 'bob':
+      - SPARC: '(OP) ALL'
+      - SGI: '(OP) ALL'
+    - jim:
+      - +biglab: ALL
+    - '+secretaries':
+      - ALL:
+        - PRINTING
+        - /usr/bin/adduser
+        - /usr/bin/rmuser
+    - fred:
+      - ALL: '(DB) NOPASSWD: ALL'
+    - john:
+      - ALPHA:
+        - '/usr/bin/su [!-]*'
+        - '!/usr/bin/su *root*'
+    - jen:
+      - ALL: ALL
+      - '!SERVERS': ALL
+    - jill:
+      - SERVERS:
+        - /usr/bin/
+        - '!SU'
+        - '!SHELLS'
+    - steve:
+      - CSNETS: '(operator) /usr/local/op_commands/'
+    - matt:
+      - valkyrie: KILL
+    - WEBMASTERS:
+      - WWW:
+        - '(www) ALL'
+        - '(root) /usr/bin/su www'
+    - ALL:
+      - CDROM:
+        - 'NOPASSWD: /sbin/umount /CDROM'
+        - '/sbin/mount -o nosuid\,nodev /dev/cd0a /CDROM'

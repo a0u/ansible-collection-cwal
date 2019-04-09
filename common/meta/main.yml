@@ -10,5 +10,7 @@ dependencies:
   - role: 'pkgng'
     when: 'ansible_distribution == "FreeBSD" and not (bootstrap | default(false))'
   - role: 'ssh'
+  - role: 'sudo'
+    when: 'not (bootstrap | default(false))'
   - role: 'gddns'
     when: 'gddns_username | default()'

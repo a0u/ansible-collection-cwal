@@ -1,0 +1,6 @@
+---
+
+sudo: {}
+sudo_sudoers: '/etc/sudoers'
+sudo_includedir: '/etc/sudoers.d'
+sudo_visudo: '/usr/sbin/visudo'
