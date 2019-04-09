@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# $FreeBSD: $
+#
+# PROVIDE: bitlbee
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+case $0 in
+/etc/rc*)
+	# $0 is /etc/rc (/etc/rc.shutdown) during boot (shutdown)
+	name=$_file
+	;;
+*)
+	name=$0
+	;;
+esac
+
+name="${name##*/}"
+rcvar="${name}_enable"
+
+load_rc_config "${name}"
+
+eval "${rcvar}=\${${rcvar}:-'NO'}"
+eval "_bitlbee_user=\${${name}_user:-'bitlbee'}"
+eval "_bitlbee_config=\${${name}_config:-'/usr/local/etc/bitlbee/bitlbee.conf'}"
+eval "_bitlbee_dir=\${${name}_dir:-'/var/db/bitlbee/${name##bitlbee_}'}"
+eval "_bitlbee_flags=\${${name}_flags}"
+
+pidfile="/var/run/${name}.pid"
+required_files="${_bitlbee_config}"
+command='/usr/local/sbin/bitlbee'
+command_args="-F -u ${_bitlbee_user} -c ${_bitlbee_config} -d ${_bitlbee_dir} -P ${pidfile}"
+
+run_rc_command "$1"

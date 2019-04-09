@@ -1,0 +1,23 @@
+#
+# bitlbee.conf(5): BitlBee configuration
+#
+{% macro option(key, val) -%}
+{% if val is string -%}
+{{ key }} = {{ val }}
+{%- endif -%}
+{% endmacro %}
+
+[settings]
+
+RunMode = Daemon
+User = {{ bitlbee_user }}
+DaemonInterface = {{ bitlbee_intf }}
+{{ option("DaemonPort", bitlbee_port) }}
+
+AuthMode = Closed
+{{ option("AuthPassword", bitlbee_authpw) }}
+{{ option("OperPassword", bitlbee_operpw) }}
+
+[defaults]
+
+private = 1

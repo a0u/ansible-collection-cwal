@@ -1,0 +1,8 @@
+---
+
+bitlbee_conf: '/etc/bitlbee/bitlbee.conf'
+bitlbee_user: 'bitlbee'
+bitlbee_intf: '127.0.0.1'
+bitlbee_port: null
+bitlbee_authpw: null
+bitlbee_operpw: null

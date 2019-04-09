@@ -1,0 +1,16 @@
+---
+
+dependencies:
+  - role: 'pkgng'
+    pkgs:
+      - 'bitlbee'
+      - 'bitlbee-steam'
+      - 'purple-slack'
+      - 'purple-discord'
+  - role: 'rc'
+    rc:
+      bitlbee:
+        base: false
+        conf:
+          bitlbee_enable: '{{ bitlbee_ports is not mapping }}'
+    when: 'ansible_distribution == "FreeBSD"'
