@@ -1,0 +1,13 @@
+---
+
+dependencies:
+  - role: 'pkgng'
+    pkgs:
+      - 'znc'
+  - role: 'rc'
+    rc:
+      znc:
+        base: false
+        conf:
+          znc_enable: true
+    when: 'ansible_distribution == "FreeBSD"'
