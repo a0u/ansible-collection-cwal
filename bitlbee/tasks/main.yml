@@ -4,7 +4,7 @@
   include_vars: '{{ item }}'
   with_first_found:
     - files: '{{ ansible_distribution }}.yml'
-      skip: true
+      errors: 'ignore'
   tags: 'bitlbee'
 
 - name: 'create bitlbee.conf(5)'

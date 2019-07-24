@@ -36,6 +36,6 @@
   pkgng:
     name: '{{ pkgs }}'
     state: 'present'
-  when: 'pkgs'
+  when: 'pkgs | default()'
   register: 'pkgng_init'
   tags: 'pkgng'

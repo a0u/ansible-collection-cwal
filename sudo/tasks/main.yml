@@ -4,7 +4,7 @@
   include_vars: '{{ item }}'
   with_first_found:
     - files: '{{ ansible_distribution }}.yml'
-      skip: true
+      errors: 'ignore'
   tags: 'sudo'
 
 - name: 'create sudoers(5)'
@@ -12,7 +12,7 @@
     src: 'sudoers.j2'
     dest: '{{ sudo_sudoers }}'
     owner: 'root'
-    group: 0
+    group: '0'
     mode: 0400
     validate: '{{ sudo_visudo }} -cf %s'
   tags: 'sudo'
