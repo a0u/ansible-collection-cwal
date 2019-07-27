@@ -1,0 +1,34 @@
+---
+
+- name: 'install bitlbee rc(8) script'
+  copy:
+    src: '_bitlbee'
+    dest: '/usr/local/etc/rc.d/_bitlbee'
+    owner: 'root'
+    group: 'wheel'
+    mode: 0555
+  tags: 'bitlbee'
+
+- name: 'create bitlbee rc(8) symlinks'
+  file:
+    src: '_bitlbee'
+    path: '/usr/local/etc/rc.d/bitlbee_{{ item }}'
+    state: 'link'
+    force: true
+  loop: '{{ bitlbee_port.keys() | list }}'
+  when: 'bitlbee_port is mapping'
+  tags: 'bitlbee'
+
+- name: 'set bitlbee rc.conf(8) variables'
+  sysrc:
+    state: 'present'
+    file: '/usr/local/etc/rc.conf.d/bitlbee_{{ item.key }}'
+    # <https://github.com/ansible/ansible/issues/17324>
+    conf: |
+      {
+        'bitlbee_{{ item.key }}_enable': true,
+        'bitlbee_{{ item.key }}_flags': '-p {{ item.value }}'
+      }
+  loop: '{{ bitlbee_port | dict2items }}'
+  when: 'bitlbee_port is mapping'
+  tags: 'bitlbee'
