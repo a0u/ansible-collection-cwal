@@ -1,0 +1,11 @@
+---
+
+dependencies:
+  - role: 'xorg'
+  - role: 'pkg'
+    pkgng:
+      - 'drm-kmod'
+      - 'libva-intel-driver'
+  - role: 'loader'
+    loader:
+      i915kms_load: true
