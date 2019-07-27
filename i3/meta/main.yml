@@ -1,0 +1,18 @@
+---
+
+dependencies:
+  - role: 'xorg'
+    xorg:
+      '10-terminus':
+        Files:
+          - 'FontPath "{{ {
+                "FreeBSD": "/usr/local/share/fonts/terminus-font/",
+                "Gentoo": "/usr/share/fonts/terminus/",
+              }[ansible_distribution] | mandatory }}"'
+  - role: 'pkg'
+    all:
+      - 'i3'
+      - 'i3status'
+      - 'dmenu'
+      - 'rxvt-unicode'
+      - 'terminus-font'
