@@ -1,0 +1,10 @@
+---
+
+dependencies:
+  - role: 'xorg'
+  - role: 'pkg'
+    pkgng:
+      - 'nvidia-driver'
+  - role: 'loader'
+    loader:
+      nvidia-modeset_load: true
