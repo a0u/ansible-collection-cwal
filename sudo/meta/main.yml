@@ -1,6 +1,6 @@
 ---
 
 dependencies:
-  - role: 'pkgng'
-    pkgs:
+  - role: 'pkg'
+    all:
       - 'sudo'

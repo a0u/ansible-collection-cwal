@@ -2,8 +2,8 @@
 
 dependencies:
   - role: 'ports'
-  - role: 'pkgng'
-    pkgs:
+  - role: 'pkg'
+    pkgng:
       - 'poudriere'
       - 'git'
     when: 'not (bootstrap | default(false))'

@@ -1,8 +1,10 @@
 ---
 
 dependencies:
-  - role: 'pkgng'
-    pkgs:
+  - role: 'pkg'
+    all:
+      - 'bitlbee'
+    pkgng:
       - 'bitlbee'
       - 'bitlbee-steam'
       - 'purple-slack'

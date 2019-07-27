@@ -12,7 +12,7 @@
 
 - name: 'copy repo configuration'
   template:
-    src: 'repo.conf.j2'
+    src: 'pkgng/repo.conf.j2'
     dest: '{{ pkgng_repos_dir }}/{{ item.key }}.conf'
     owner: 'root'
     group: 'wheel'
@@ -32,10 +32,10 @@
   when: '(item.pubkey is defined) and (pkgng_srcdir is string) and (pkgng_init is not defined)'
   tags: 'pkgng'
 
-- name: 'install packages'
+- name: 'install packages: {{ (pkgng or all) | join(", ") }}'
   pkgng:
-    name: '{{ pkgs }}'
+    name: '{{ pkgng or all }}'
     state: 'present'
-  when: 'pkgs | default()'
+  when: 'pkgng or all'
   register: 'pkgng_init'
   tags: 'pkgng'

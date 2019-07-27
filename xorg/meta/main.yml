@@ -1,8 +1,8 @@
 ---
 
 dependencies:
-  - role: 'pkgng'
-    pkgs:
+  - role: 'pkg'
+    pkgng:
       - 'xorg-minimal'
       - 'xrdb'
       - 'xrandr'
