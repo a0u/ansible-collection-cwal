@@ -1,0 +1,19 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+
+{% for name, entries in item.value.items() %}
+Section "{{ name }}"
+  {% for entry in entries %}
+    {% if entry is mapping %}
+      {% for subname, subentries in entry.items() %}
+	SubSection "{{ subname }}"
+          {% for subentry in subentries %}
+		{{ subentry }}
+          {% endfor %}
+	EndSubSection
+      {% endfor -%}
+    {% else %}
+	{{ entry }}
+    {% endif %}
+  {% endfor %}
+EndSection
+{% endfor %}

@@ -1,0 +1,9 @@
+---
+
+dependencies:
+  - role: 'pkgng'
+    pkgs:
+      - 'xorg-minimal'
+      - 'xrdb'
+      - 'xrandr'
+      - 'xsettingsd'

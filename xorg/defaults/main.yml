@@ -1,0 +1,7 @@
+---
+
+xorg: {}
+xorg_confdir: '{{ {
+    "FreeBSD": "/usr/local/etc/X11/xorg.conf.d",
+    "Linux": "/etc/X11/xorg.conf.d",
+  }[ansible_system] | mandatory }}'

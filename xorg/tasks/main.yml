@@ -1,0 +1,20 @@
+---
+
+- name: 'create xorg.conf.d(5) directory'
+  file:
+    path: '{{ xorg_confdir | mandatory }}'
+    state: 'directory'
+    recurse: true
+    owner: 'root'
+    group: '0'
+  tags: 'xorg'
+
+- name: 'create xorg.conf.d(5) files'
+  template:
+    src: 'xorg.conf.j2'
+    dest: '{{ xorg_confdir }}/{{ item.key }}.conf'
+    owner: 'root'
+    group: '0'
+    mode: '0444'
+  loop: '{{ xorg | dict2items }}'
+  tags: 'xorg'
