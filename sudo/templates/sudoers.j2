@@ -1,18 +1,19 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
 #
 # sudoers(5): default sudo security policy
 #
 # This file MUST be edited with the 'visudo' command as root.
-{% macro concat(x) -%}
-{{ x|join(', ') if x is iterable and x is not string else x -}}
-{% endmacro -%}
-
-{% if sudo.aliases is mapping -%}
-
-{% macro alias(map, type) -%}
-{% for name, values in map|default({})|dictsort -%}
-{{ type }}_Alias {{ name }} = {{ concat(values) }}
-{% endfor -%}
+{% macro concat(x) %}
+{{ (x | join(', ')) if x is iterable and x is not string else x -}}
 {% endmacro %}
+
+{%- if sudo.aliases is mapping %}
+
+{% macro alias(dict, type) %}
+{% for name, values in dict | default({}) | dictsort %}
+{{ type }}_Alias {{ name }} = {{ concat(values) }}
+{% endfor %}
+{% endmacro -%}
 
 # Host aliases
 {{ alias(sudo.aliases.hosts, 'Host') }}
@@ -23,18 +24,18 @@
 # Runas aliases
 {{ alias(sudo.aliases.runas, 'Runas') }}
 
-{%- endif -%}
+{%- endif %}
 
-{% if sudo.defaults is mapping -%}
+{%- if sudo.defaults is mapping %}
 
-{% macro default(map, type) -%}
-{% for scope, params in map|default({})|dictsort -%}
+{% macro default(dict, type) %}
+{% for scope, params in dict | default({}) | dictsort %}
 Defaults{{ type }}{{ scope }} {{ concat(params) }}
-{% endfor -%}
-{% endmacro %}
+{% endfor %}
+{% endmacro -%}
 
 # General defaults
-{% for param in sudo.defaults.general|default([]) %}
+{% for param in sudo.defaults.general | default([]) %}
 Defaults {{ param }}
 {% endfor %}
 
@@ -47,24 +48,24 @@ Defaults {{ param }}
 # Runas defaults
 {{ default(sudo.defaults.runas, '>') }}
 
-{%- endif -%}
+{%- endif %}
 
-{% if sudo.userspec is defined and sudo.userspec is iterable %}
+{%- if sudo.userspec is sequence %}
 
 # User specifications
-{% for level1 in sudo.userspec -%}
-  {% for user, level2 in level1|dictsort -%}
-    {% for map in level2 -%}
-      {% for host, cmds in map|dictsort %}
+{% for level1 in sudo.userspec %}
+  {% for user, level2 in level1 | dictsort %}
+    {% for dict in level2 %}
+      {% for host, cmds in dict | dictsort %}
 {{ user }} {{ host }} = {{ concat(cmds) }}
+      {% endfor %}
+    {% endfor %}
+  {% endfor %}
 {% endfor %}
-    {%- endfor %}
-  {%- endfor %}
-{%- endfor %}
 
-{%- endif -%}
+{%- endif %}
 
-{% if includedir is defined %}
+{%- if includedir is defined %}
 
 #includedir {{ includedir }}
-{%- endif -%}
+{% endif %}
