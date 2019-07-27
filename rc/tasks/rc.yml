@@ -1,0 +1,33 @@
+---
+
+- name: 'create directories'
+  file:
+    path: '{{ item }}'
+    state: 'directory'
+    recurse: true
+    owner: 'root'
+    group: 'wheel'
+  loop:
+    - '/etc/rc.conf.d'
+    - '/usr/local/etc/rc.d'
+    - '/usr/local/etc/rc.conf.d'
+  when: 'rc_conf is not defined'
+  tags: 'rc'
+
+- name: 'set rc.conf(5) variables'
+  sysrc:
+    state: 'present'
+    conf: '{{ item.value.conf | mandatory }}'
+    file: '{{ item.value.base | ternary("", "/usr/local") }}/etc/rc.conf.d/{{ item.key }}'
+  loop: '{{ rc | dict2items }}'
+  when: 'item.value.when | default(true)'
+  register: 'rc_conf'
+  tags: 'rc'
+
+- name: 'manage rc(8) services'
+  service:
+    name: '{{ item.item.key }}'
+    state: '{{ item.item.value.state }}'
+  loop: '{{ rc_conf.results }}'
+  when: 'item.changed and item.item.value.state is defined'
+  tags: 'rc'

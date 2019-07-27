@@ -15,4 +15,3 @@ dependencies:
         base: false
         conf:
           bitlbee_enable: '{{ bitlbee_ports is not mapping }}'
-    when: 'ansible_distribution == "FreeBSD"'

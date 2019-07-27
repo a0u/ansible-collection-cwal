@@ -6,7 +6,6 @@ dependencies:
   - role: 'nsswitch'
   - role: 'files'
   - role: 'rc'
-    when: 'ansible_distribution == "FreeBSD"'
   - role: 'pkg'
     all: '{{ pkgs }}'
     when: 'not (bootstrap | default(false))'

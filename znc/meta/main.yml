@@ -10,4 +10,3 @@ dependencies:
         base: false
         conf:
           znc_enable: true
-    when: 'ansible_distribution == "FreeBSD"'
