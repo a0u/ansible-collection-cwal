@@ -1,0 +1,11 @@
+---
+
+dependencies:
+  - role: 'pkg'
+    pkgng:
+      - 'devcpu-data'
+  - role: 'loader'
+    loader:
+      cpu_microcode_load: true
+      cpu_microcode_name: '/boot/firmware/intel-ucode.bin'
+      coretemp_load: true
