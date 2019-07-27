@@ -9,12 +9,15 @@
     mode: 0555
   tags: 'gddns'
 
-- name: 'set rc.conf(5) variables'
-  sysrc:
-    file: '/usr/local/etc/rc.conf.d/gddns'
-    conf:
-      gddns_enable: true
-      gddns_hostname: '{{ gddns_hostname | mandatory }}'
+- import_role:
+    name: 'rc'
+  vars:
+    rc:
+      gddns:
+        base: false
+        conf:
+          gddns_enable: true
+          gddns_hostname: '{{ gddns_hostname | mandatory }}'
   when: '(gddns_hostname | default()) and not (gddns_hostname | ipaddr)'
   tags: 'gddns'
 
