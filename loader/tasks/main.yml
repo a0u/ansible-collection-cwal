@@ -1,0 +1,9 @@
+---
+
+- name: 'set loader.conf(5) variables'
+  sysrc:
+    state: 'present'
+    conf: '{{ loader | mandatory }}'
+    file: '/boot/loader.conf'
+  when: 'ansible_distribution == "FreeBSD" and (loader | default())'
+  tags: 'loader'
