@@ -1,0 +1,12 @@
+---
+
+dependencies:
+  - role: 'pkg'
+    all:
+      - 'openntpd'
+  - role: 'rc'
+    rc:
+      openntpd:
+        base: false
+        conf:
+          openntpd_enable: true

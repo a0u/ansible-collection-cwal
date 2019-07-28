@@ -1,0 +1,16 @@
+#
+# ntpd.conf(5): Network Time Protocol daemon configuration file
+#
+
+{% for addr in openntpd_listen -%}
+listen {{ addr }}
+{% endfor -%}
+{% for server in openntpd_servers -%}
+servers {{ server }}
+{% endfor -%}
+{% for device in openntpd_sensor -%}
+sensor {{ device }}
+{% endfor -%}
+{% for constraint in openntpd_constraints -%}
+constraints from "{{ constraint }}"
+{% endfor -%}

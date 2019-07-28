@@ -1,0 +1,10 @@
+---
+
+- name: 'create ntpd.conf(5)'
+  template:
+    src: 'ntpd.conf.j2'
+    dest: '{{ openntpd_conf }}'
+    owner: 'root'
+    group: '0'
+    mode: 0444
+  tags: 'openntpd'
