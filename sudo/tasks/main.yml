@@ -1,12 +1,5 @@
 ---
 
-- name: 'include sudo parameters'
-  include_vars: '{{ item }}'
-  with_first_found:
-    - files: '{{ ansible_distribution }}.yml'
-      errors: 'ignore'
-  tags: 'sudo'
-
 - name: 'create sudoers(5)'
   template:
     src: 'sudoers.j2'

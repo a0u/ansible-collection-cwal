@@ -1,12 +1,5 @@
 ---
 
-- name: 'include bitlbee parameters'
-  include_vars: '{{ item }}'
-  with_first_found:
-    - files: '{{ ansible_distribution }}.yml'
-      errors: 'ignore'
-  tags: 'bitlbee'
-
 - name: 'create bitlbee.conf(5)'
   template:
      src: 'bitlbee.conf.j2'

@@ -1,6 +1,9 @@
 ---
 
-bitlbee_conf: '/etc/bitlbee/bitlbee.conf'
+bitlbee_conf: '{{ {
+    "FreeBSD": "/usr/local/etc/bitlbee/bitlbee.conf",
+    "Linux": "/etc/bitlbee/bitlbee.conf",
+  }[ansible_system] | mandatory }}'
 bitlbee_user: 'bitlbee'
 bitlbee_intf: '127.0.0.1'
 bitlbee_port: null

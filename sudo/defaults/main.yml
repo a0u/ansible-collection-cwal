@@ -1,6 +1,18 @@
 ---
 
 sudo: {}
-sudo_sudoers: '/etc/sudoers'
-sudo_includedir: '/etc/sudoers.d'
-sudo_visudo: '/usr/sbin/visudo'
+
+sudo_sudoers: '{{ {
+    "FreeBSD": "/usr/local/etc/sudoers",
+    "Linux": "/etc/sudoers",
+  }[ansible_system] | mandatory }}'
+
+sudo_includedir: '{{ {
+    "FreeBSD": "/usr/local/etc/sudoers.d",
+    "Linux": "/etc/sudoers.d",
+  }[ansible_system] | mandatory }}'
+
+sudo_visudo: '{{ {
+    "FreeBSD": "/usr/local/sbin/visudo",
+    "Linux": "/usr/sbin/visudo",
+  }[ansible_system] | mandatory }}'

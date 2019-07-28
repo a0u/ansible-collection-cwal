@@ -1,5 +1,0 @@
----
-
-sudo_sudoers: '/usr/local/etc/sudoers'
-sudo_includedir: '/usr/local/etc/sudoers.d'
-sudo_visudo: '/usr/local/sbin/visudo'
