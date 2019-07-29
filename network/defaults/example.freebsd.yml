@@ -1,0 +1,35 @@
+---
+
+# References:
+# <https://www.freebsd.org/doc/handbook/config-network-setup.html>
+# <https://www.freebsd.org/doc/handbook/network-bridging.html>
+# <https://www.freebsd.org/doc/handbook/network-routing.html>
+# <https://www.freebsd.org/doc/handbook/configtuning-virtual-hosts.html>
+
+network:
+  igb0:
+    ifconfig: 'SYNCDHCP'
+  igb1:
+    ifconfig: 'inet 10.1.1.1 netmask 255.255.255.0'
+    alias:
+      - 'inet 10.1.1.2 netmask 255.255.255.255'
+      - 'inet 10.1.1.3 netmask 255.255.255.255'
+      - 'inet 202.0.75.17 netmask 255.255.255.240'
+      - 'inet 202.0.75.18 netmask 255.255.255.255'
+    aliases: 'inet 10.1.1.1-3/24 inet 202.0.75.17-18/28'
+  re0:
+    ifconfig: 'up'
+  bridge0:
+    cloned: true
+    ifconfig: 'inet 192.168.1.1/24'
+    bridge:
+      - 're0'
+      - 'tap*'
+  tap0:
+    cloned: true
+
+routing_gateway: true
+routing_default: '192.168.0.1'
+routing:
+  net0: '-net 192.168.0.0/24 192.168.0.1'
+  net1: '-net 192.168.1.0/24 192.168.1.1'

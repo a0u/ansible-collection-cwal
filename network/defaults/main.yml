@@ -1,0 +1,11 @@
+---
+
+network: {}
+
+# Gentoo
+network_extra: {}
+
+# FreeBSD
+routing: {}
+routing_default: null
+routing_gateway: null

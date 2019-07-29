@@ -6,6 +6,7 @@ dependencies:
   - role: 'nsswitch'
   - role: 'files'
   - role: 'rc'
+  - role: 'network'
   - role: 'loader'
   - role: 'pkg'
     all: '{{ pkgs }}'

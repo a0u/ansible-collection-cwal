@@ -1,0 +1,23 @@
+---
+
+- name: 'configure interfaces'
+  netif:
+    # NOTE: Use historical "network" config file since only it is loaded
+    # by both netif and dhclient rc scripts
+    file: '/etc/rc.conf.d/network'
+    network: '{{ network }}'
+  when: 'network | default()'
+  tags: 'network'
+
+- name: 'configure bridging'
+  bridge:
+    network: '{{ network }}'
+  when: 'network | default()'
+  tags: 'network'
+
+- name: 'configure routing'
+  routing:
+    gateway: '{{ routing_gateway }}'
+    default: '{{ routing_default }}'
+    routes: '{{ routing }}'
+  tags: 'network'

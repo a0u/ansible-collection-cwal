@@ -1,0 +1,45 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+
+{%- macro concat(x) %}
+{{ (x | join(' ')) if x is iterable and x is not string else x -}}
+{% endmacro %}
+
+{%- macro prefix(p, xs) %}
+{% if xs is iterable and xs is not string %}
+{{ [ p ] | product(xs) | map('join') | join(' ') -}}
+{% else %}
+{{ p }}{{ xs -}}
+{% endif %}
+{% endmacro %}
+
+{%- macro need(iface, deps) %}
+rc_net_{{ iface }}_need={{ prefix('net.', deps) | quote }}
+{%- endmacro %}
+
+{%- for key, value in network_extra.items() %}
+{{ key }}={{ concat(value) | quote }}
+{% endfor %}
+
+{%- for iface, entry in network.items() %}
+
+  {% for key, value in entry.items() %}
+{{ key }}_{{ iface }}={{ concat(value) | quote }}
+  {% endfor %}
+  {# VLAN (802.1Q) #}
+  {% if entry.vlans is defined %}
+    {% for vlan, options in entry.vlans.items() %}
+      {% for key, value in options.items() %}
+      {# TODO: Support options of the form <key>_<iface>_vlan<vlan> #}
+{{ iface }}_vlan{{ vlan }}_{{ key }}={{ concat(value) | quote }}
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+  {# Bridging (802.1D) #}
+  {% if entry.bridge is defined %}
+{{ need(iface, entry.bridge) }}
+  {% endif %}
+  {# PPPoE / PPPoA #}
+  {% if entry.link is defined %}
+{{ need(iface, entry.link) }}
+  {% endif %}
+{% endfor %}

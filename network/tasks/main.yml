@@ -1,0 +1,7 @@
+---
+
+- import_tasks: 'freebsd.yml'
+  when: 'ansible_distribution == "FreeBSD"'
+
+- import_tasks: 'gentoo.yml'
+  when: 'ansible_distribution == "Gentoo"'

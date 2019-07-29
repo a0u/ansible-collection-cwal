@@ -1,0 +1,11 @@
+---
+
+- name: 'create netifrc configuration'
+  template:
+    dest: '/etc/conf.d/net'
+    src: 'gentoo/net.j2'
+    owner: 'root'
+    group: 'root'
+    mode: 0444
+  when: '(network or network_extra) | default()'
+  tags: 'network'
