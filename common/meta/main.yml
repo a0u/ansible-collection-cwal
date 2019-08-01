@@ -8,6 +8,7 @@ dependencies:
   - role: 'rc'
   - role: 'network'
   - role: 'loader'
+  - role: 'sysctl'
   - role: 'pkg'
     all: '{{ pkgs }}'
     when: 'not (bootstrap | default(false))'

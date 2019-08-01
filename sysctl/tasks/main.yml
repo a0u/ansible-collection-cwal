@@ -1,0 +1,10 @@
+---
+
+- name: 'set sysctl.conf(5) parameters'
+  sysctl:
+    state: 'present'
+    name: '{{ item.key }}'
+    value: '{{ item.value }}'
+    sysctl_file: '{{ sysctl_file or omit }}'
+  loop: '{{ sysctl | dict2items }}'
+  tags: 'sysctl'
