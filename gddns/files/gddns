@@ -4,8 +4,7 @@
 #
 
 # PROVIDE: gddns
-# REQUIRE: NETWORKING
-# BEFORE: hostname
+# REQUIRE: NETWORKING hostname
 
 . /etc/rc.subr
 
