@@ -1,0 +1,14 @@
+---
+
+- name: 'set gddns rc.conf(8) variables'
+  sysrc:
+    state: 'present'
+    file: '/usr/local/etc/rc.conf.d/gddns'
+    # <https://github.com/ansible/ansible/issues/17324>
+    conf: |
+      {
+        'gddns_enable': true,
+        'gddns_hostname': '{{ gddns_hostname | mandatory }}'
+      }
+  when: '(gddns_hostname | default()) and not (gddns_hostname | ipaddr)'
+  tags: 'gddns'

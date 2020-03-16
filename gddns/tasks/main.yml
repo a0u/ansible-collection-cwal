@@ -9,18 +9,6 @@
     mode: 0555
   tags: 'gddns'
 
-- import_role:
-    name: 'rc'
-  vars:
-    rc:
-      gddns:
-        base: false
-        conf:
-          gddns_enable: true
-          gddns_hostname: '{{ gddns_hostname | mandatory }}'
-  when: '(gddns_hostname | default()) and not (gddns_hostname | ipaddr)'
-  tags: 'gddns'
-
 - name: 'set Google DDNS credentials'
   copy:
     content: |
@@ -31,3 +19,6 @@
     group: 'wheel'
     mode: 0400
   tags: 'gddns'
+
+- import_tasks: 'rc.yml'
+  when: 'ansible_distribution == "FreeBSD"'
