@@ -5,4 +5,4 @@ dependencies:
   - role: 'pkg'
     pkgng:
       - 'poudriere'
-    when: 'not (bootstrap | default(false))'
+    when: 'not (bootstrap | default(false) | bool)'

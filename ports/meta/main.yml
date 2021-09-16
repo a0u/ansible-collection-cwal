@@ -4,4 +4,4 @@ dependencies:
   - role: 'pkg'
     pkgng:
       - 'git'
-    when: 'not (bootstrap | default(false))'
+    when: 'not (bootstrap | default(false) | bool)'
