@@ -27,11 +27,17 @@
     mode: 0444
   tags: 'ports'
 
-- name: 'checkout ports(7) tree'
-  subversion:
-    repo: 'https://svn.freebsd.org/ports/head'
+- name: 'install git'
+  command: 'pkg -R /etc/pkg install -r FreeBSD -y git-lite'
+  args:
+    creates: '/usr/local/bin/git'
+  tags:
+    - 'ports'
+
+- name: 'clone ports(7) tree'
+  git:
+    repo: 'https://git.freebsd.org/ports.git'
     dest: '{{ portsdir }}'
+    clone: true
     force: true
-    in_place: true
-    executable: 'svnlite'
   tags: 'ports'

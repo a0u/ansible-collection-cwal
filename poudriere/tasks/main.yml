@@ -30,15 +30,6 @@
 
 # poudriere configuration setup
 
-- name: 'install git'
-  command: 'pkg -R /etc/pkg install -r FreeBSD -y git-lite'
-  args:
-    creates: '/usr/local/bin/git'
-  when: 'poudriere_etc_git | default()'
-  tags:
-    - 'poudriere'
-    - 'poudriere:conf'
-
 - name: 'clone poudriere.d repository'
   git:
     repo: '{{ poudriere_etc_git }}'
