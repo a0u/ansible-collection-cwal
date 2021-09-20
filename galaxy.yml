@@ -1,0 +1,16 @@
+namespace: 'a0u'
+name: 'cwal'
+version: '0.0.1'
+readme: 'README.md'
+authors:
+  - 'Albert Ou'
+description: 'Collection of server and workstation roles'
+license:
+  - 'BSD-3-Clause'
+tags:
+  - system
+  - networking
+repository: 'https://github.com/a0u/ansible-collection-cwal.git'
+documentation: 'https://github.com/a0u/ansible-collection-cwal'
+homepage: 'https://github.com/a0u/ansible-collection-cwal'
+issues: 'https://github.com/a0u/ansible-collection-cwal/issues'
