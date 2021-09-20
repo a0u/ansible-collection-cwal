@@ -1,0 +1,9 @@
+---
+
+- name: 'install apt packages: {{ (apt or all) | join(", ") }}'
+  apt:
+    name: '{{ apt or all }}'
+    state: 'present'
+    update_cache: true
+    install_recommends: false
+  tags: 'apt'

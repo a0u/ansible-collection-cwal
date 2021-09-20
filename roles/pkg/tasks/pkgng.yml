@@ -1,6 +1,6 @@
 ---
 
-- name: 'create repos directory'
+- name: 'create pkgng repos directory'
   file:
     path: '{{ pkgng_repos_dir }}'
     state: 'directory'
@@ -10,7 +10,7 @@
   when: 'pkgng_init is not defined'
   tags: 'pkgng'
 
-- name: 'copy repo configuration'
+- name: 'copy pkgng repo configuration'
   template:
     src: 'pkgng/repo.conf.j2'
     dest: '{{ pkgng_repos_dir }}/{{ item.key }}.conf'
@@ -21,7 +21,7 @@
   when: 'pkgng_init is not defined'
   tags: 'pkgng'
 
-- name: 'copy repo public keys'
+- name: 'copy pkgng repo public keys'
   copy:
     src: '{{ pkgng_srcdir }}/{{ item.pubkey | basename }}'
     dest: '{{ item.pubkey }}'
@@ -32,7 +32,7 @@
   when: '(item.pubkey is defined) and (pkgng_srcdir is string) and (pkgng_init is not defined)'
   tags: 'pkgng'
 
-- name: 'install packages: {{ (pkgng or all) | join(", ") }}'
+- name: 'install pkgng packages: {{ (pkgng or all) | join(", ") }}'
   pkgng:
     name: '{{ pkgng or all }}'
     state: 'present'

@@ -2,3 +2,6 @@
 
 - import_tasks: 'pkgng.yml'
   when: 'ansible_distribution == "FreeBSD"'
+
+- import_tasks: 'apt.yml'
+  when: 'ansible_distribution in ["Debian", "Ubuntu"]'
