@@ -1,0 +1,16 @@
+---
+
+- hosts: '{{ target | default("gui") }}'
+  remote_user: 'root'
+  become: false
+  become_method: 'su'
+# remote_user: 'aou'
+# become: true
+# become_method: 'sudo'
+  gather_facts: true
+  roles:
+    - 'sysctl'
+    - 'openntpd'
+    - 'common'
+    - 'xorg-nvidia'
+    - 'i3'
