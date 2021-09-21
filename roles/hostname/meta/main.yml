@@ -1,0 +1,12 @@
+---
+
+dependencies:
+  - role: 'rc'
+    rc:
+      hostname:
+        base: true
+        state: 'restarted'
+        conf:
+          hostname: '{{ hostname }}'
+        when: 'not (hostname | ansible.netcommon.ipaddr)'
+    tags: 'hostname'

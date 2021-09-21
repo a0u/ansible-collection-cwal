@@ -1,0 +1,9 @@
+---
+
+- name: 'set hostname'
+  hostname:
+    name: '{{ hostname }}'
+  when:
+    - 'not (hostname | ansible.netcommon.ipaddr)'
+    - 'ansible_distribution != "FreeBSD"'
+  tags: 'hostname'
