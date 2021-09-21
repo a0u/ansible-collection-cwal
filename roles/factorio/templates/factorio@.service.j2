@@ -1,0 +1,12 @@
+[Unit]
+Description=Factorio Headless Server
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User={{ factorio_user }}
+ExecStart={{ factorio_dir }}/bin/x64/factorio --start-server {{ factorio_dir }}/saves/%i.zip --server-settings {{ factorio_dir }}/data/server-settings.json --port {{ factorio_port }} --verbose
+
+[Install]
+WantedBy=multi-user.target

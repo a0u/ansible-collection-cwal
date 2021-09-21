@@ -1,0 +1,8 @@
+---
+
+factorio_version: 'stable'
+factorio_user: 'games'
+factorio_group: 'games'
+factorio_dir: '/opt/factorio'
+factorio_port: 34197
+factorio_server_settings: {}

@@ -1,0 +1,10 @@
+---
+
+- name: 'install factorio systemd.unit(5) file'
+  template:
+    src: 'factorio@.service.j2'
+    dest: '/etc/systemd/system/factorio@.service'
+    owner: 'root'
+    group: 'root'
+    mode: 0444
+  tags: 'factorio'

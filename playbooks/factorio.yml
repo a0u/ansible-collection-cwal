@@ -1,0 +1,20 @@
+---
+
+- hosts: '{{ target | default("factorio") }}'
+  remote_user: 'admin'
+  become: true
+  become_method: 'sudo'
+  gather_facts: true
+  tasks:
+    - group_by:
+        key: '{{ ansible_distribution }}'
+      tags: 'always'
+
+- hosts: '{{ target | default("factorio") }}'
+  remote_user: 'admin'
+  become: true
+  become_method: 'sudo'
+  gather_facts: false
+  roles:
+    - 'common'
+    - 'factorio'

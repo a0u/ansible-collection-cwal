@@ -1,0 +1,45 @@
+---
+
+- name: 'install Factorio headless server'
+  unarchive:
+    src: 'https://www.factorio.com/get-download/{{ factorio_version }}/headless/linux64'
+    dest: '{{ factorio_dir | dirname }}'
+    remote_src: true
+    owner: '{{ factorio_user }}'
+    group: '{{ factorio_group }}'
+    keep_newer: false
+  tags: 'factorio'
+
+- name: 'set ownership of Factorio install directory'
+  file:
+    path: '{{ factorio_dir }}'
+    state: 'directory'
+    recurse: true
+    owner: '{{ factorio_user }}'
+    group: '{{ factorio_group }}'
+  tags: 'factorio'
+
+- name: 'create Factorio save directory'
+  file:
+    path: '{{ factorio_dir }}/saves'
+    state: 'directory'
+    owner: '{{ factorio_user }}'
+    group: '{{ factorio_group }}'
+    mode: 0755
+  tags: 'factorio'
+
+- name: 'populate Factorio server settings'
+  copy:
+    content: '{{ factorio_server_settings | to_nice_json }}'
+    dest: '{{ factorio_dir }}/data/server-settings.json'
+    owner: '{{ factorio_user }}'
+    group: '{{ factorio_group }}'
+    mode: 0400
+  tags:
+    - 'factorio'
+    - 'factorio:conf'
+
+- import_tasks: 'systemd.yml'
+  when:
+    - 'ansible_system == "Linux"'
+    - 'ansible_service_mgr == "systemd"'
