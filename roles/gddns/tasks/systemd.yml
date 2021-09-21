@@ -1,0 +1,28 @@
+---
+
+- name: 'install gddns systemd.unit(5) file'
+  copy:
+    src: 'systemd/gddns.service'
+    dest: '/etc/systemd/system/gddns.service'
+    owner: 'root'
+    group: 'root'
+    mode: 0444
+  tags: 'gddns'
+
+- name: 'set Google DDNS credentials'
+  copy:
+    content: |
+      GDDNS_USER={{ gddns_username | mandatory }}
+      GDDNS_PASS={{ gddns_password | mandatory }}
+    dest: '/etc/gddns.conf'
+    owner: 'root'
+    group: 'root'
+    mode: 0400
+  tags: 'gddns'
+
+- name: 'enable gddns systemd service'
+  systemd:
+    name: 'gddns'
+    enabled: true
+    daemon_reload: true
+  tags: 'gddns'

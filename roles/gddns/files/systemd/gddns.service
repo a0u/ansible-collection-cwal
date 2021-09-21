@@ -1,0 +1,13 @@
+[Unit]
+Description=Google Dynamic DNS
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+EnvironmentFile=/etc/gddns.conf
+ExecStart=/usr/bin/curl -s -d "hostname=%H" "https://${GDDNS_USER}:${GDDNS_PASS}@domains.google.com/nic/update"
+RemainAfterExit=true
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
