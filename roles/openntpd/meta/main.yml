@@ -4,9 +4,11 @@ dependencies:
   - role: 'pkg'
     all:
       - 'openntpd'
+    tags: 'openntpd'
   - role: 'rc'
     rc:
       openntpd:
         base: false
         conf:
           openntpd_enable: true
+    tags: 'openntpd'

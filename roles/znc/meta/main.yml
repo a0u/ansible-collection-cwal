@@ -4,9 +4,11 @@ dependencies:
   - role: 'pkg'
     all:
       - 'znc'
+    tags: 'znc'
   - role: 'rc'
     rc:
       znc:
         base: false
         conf:
           znc_enable: true
+    tags: 'znc'

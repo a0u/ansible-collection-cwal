@@ -7,3 +7,4 @@ dependencies:
       - 'xrdb'
       - 'xrandr'
       - 'xsettingsd'
+    tags: 'xorg'

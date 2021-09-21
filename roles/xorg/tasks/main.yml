@@ -15,6 +15,6 @@
     dest: '{{ xorg_confdir }}/{{ item.key }}.conf'
     owner: 'root'
     group: '0'
-    mode: '0444'
+    mode: 0444
   loop: '{{ xorg | dict2items }}'
   tags: 'xorg'

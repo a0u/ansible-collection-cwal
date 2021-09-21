@@ -6,6 +6,8 @@ dependencies:
     pkgng:
       - 'drm-kmod'
       - 'libva-intel-driver'
+    tags: 'xorg'
   - role: 'loader'
     loader:
       i915kms_load: true
+    tags: 'xorg'

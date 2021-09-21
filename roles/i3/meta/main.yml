@@ -9,6 +9,7 @@ dependencies:
                 "FreeBSD": "/usr/local/share/fonts/terminus-font/",
                 "Gentoo": "/usr/share/fonts/terminus/",
               }[ansible_distribution] | mandatory }}"'
+    tags: 'i3'
   - role: 'pkg'
     all:
       - 'i3'
@@ -16,3 +17,4 @@ dependencies:
       - 'dmenu'
       - 'rxvt-unicode'
       - 'terminus-font'
+    tags: 'i3'

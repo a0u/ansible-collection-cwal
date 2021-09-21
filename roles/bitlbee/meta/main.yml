@@ -9,9 +9,11 @@ dependencies:
       - 'bitlbee-steam'
       - 'purple-slack'
       - 'purple-discord'
+    tags: 'bitlbee'
   - role: 'rc'
     rc:
       bitlbee:
         base: false
         conf:
           bitlbee_enable: '{{ bitlbee_ports is not mapping }}'
+    tags: 'bitlbee'

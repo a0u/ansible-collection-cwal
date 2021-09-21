@@ -5,6 +5,8 @@ dependencies:
   - role: 'pkg'
     pkgng:
       - 'nvidia-driver'
+    tags: 'xorg'
   - role: 'loader'
     loader:
       nvidia-modeset_load: true
+    tags: 'xorg'

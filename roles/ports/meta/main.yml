@@ -5,3 +5,4 @@ dependencies:
     pkgng:
       - 'git'
     when: 'not (bootstrap | default(false) | bool)'
+    tags: 'ports'

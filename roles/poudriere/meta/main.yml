@@ -6,3 +6,4 @@ dependencies:
     pkgng:
       - 'poudriere'
     when: 'not (bootstrap | default(false) | bool)'
+    tags: 'poudriere'
