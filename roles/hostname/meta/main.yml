@@ -8,5 +8,5 @@ dependencies:
         state: 'restarted'
         conf:
           hostname: '{{ hostname }}'
-        when: 'not (hostname | ansible.netcommon.ipaddr)'
+        when: 'not (hostname | ansible.utils.ipaddr)'
     tags: 'hostname'

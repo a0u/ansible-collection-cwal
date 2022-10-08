@@ -4,6 +4,6 @@
   hostname:
     name: '{{ hostname }}'
   when:
-    - 'not (hostname | ansible.netcommon.ipaddr)'
+    - 'not (hostname | ansible.utils.ipaddr)'
     - 'ansible_distribution != "FreeBSD"'
   tags: 'hostname'

@@ -30,5 +30,5 @@
         'gddns_enable': true,
         'gddns_hostname': '{{ gddns_hostname | mandatory }}'
       }
-  when: '(gddns_hostname | default()) and not (gddns_hostname | ansible.netcommon.ipaddr)'
+  when: '(gddns_hostname | default()) and not (gddns_hostname | ansible.utils.ipaddr)'
   tags: 'gddns'
