@@ -8,6 +8,7 @@ dependencies:
       - 'bitlbee'
       - 'bitlbee-steam'
       - 'purple-slack'
+      - 'purple-googlechat'
       - 'purple-discord'
     tags: 'bitlbee'
   - role: 'rc'
