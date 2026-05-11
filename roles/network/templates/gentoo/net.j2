@@ -1,4 +1,4 @@
-#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+#jinja2: trim_blocks: True, lstrip_blocks: False
 
 {%- macro concat(x) %}
 {{ (x | join(' ')) if x is iterable and x is not string else x -}}
