@@ -7,6 +7,7 @@
     key: "{{ item.key if ((item.key | mandatory) is string) else (item.key | unique | join('\n')) }}"
     key_options: '{{ item.opts | default() | unique | join(",") or omit }}'
   loop: '{{ ssh_authorized_keys }}'
+  ignore_errors: '{{ ansible_check_mode }}'
   tags: 'ssh'
 
 - name: 'gather ssh public keys'
