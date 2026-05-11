@@ -21,6 +21,6 @@
       - '{{ item.path | mandatory }}'
   when:
     - 'ansible_system == "FreeBSD"'
-    - 'item.chflags | default()'
+    - 'item.chflags is defined'
   loop: '{{ files }}'
   tags: 'files'

@@ -6,13 +6,13 @@
     # by both netif and dhclient rc scripts
     file: '/etc/rc.conf.d/network'
     network: '{{ network }}'
-  when: 'network | default()'
+  when: 'network | length > 0'
   tags: 'network'
 
 - name: 'configure bridging'
   bridge:
     network: '{{ network }}'
-  when: 'network | default()'
+  when: 'network | length > 0'
   tags: 'network'
 
 - name: 'configure routing'

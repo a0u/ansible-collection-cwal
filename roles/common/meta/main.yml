@@ -17,4 +17,4 @@ dependencies:
   - role: 'sudo'
     when: 'not (bootstrap | default(false) | bool)'
   - role: 'gddns'
-    when: 'gddns_username | default()'
+    when: 'gddns_username is defined'

@@ -36,7 +36,7 @@
     dest: '/usr/local/etc/poudriere.d'
     clone: true
     force: true
-  when: 'poudriere_etc_git | default()'
+  when: 'poudriere_etc_git is defined'
   tags:
     - 'poudriere'
     - 'poudriere:conf'
@@ -121,7 +121,7 @@
     owner: 'root'
     group: 'wheel'
     mode: 0400
-  when: 'poudriere_key | default()'
+  when: 'poudriere_key is defined'
   tags: 'poudriere'
 
 - name: 'chown ccache directory'
