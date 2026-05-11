@@ -41,5 +41,5 @@
 
 - import_tasks: 'systemd.yml'
   when:
-    - 'ansible_system == "Linux"'
-    - 'ansible_service_mgr == "systemd"'
+    - 'ansible_facts["system"] == "Linux"'
+    - 'ansible_facts["service_mgr"] == "systemd"'

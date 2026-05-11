@@ -1,7 +1,7 @@
 ---
 
 - import_tasks: 'freebsd.yml'
-  when: 'ansible_distribution == "FreeBSD"'
+  when: 'ansible_facts["distribution"] == "FreeBSD"'
 
 - import_tasks: 'gentoo.yml'
-  when: 'ansible_distribution == "Gentoo"'
+  when: 'ansible_facts["distribution"] == "Gentoo"'

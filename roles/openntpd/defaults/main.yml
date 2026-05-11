@@ -3,7 +3,7 @@
 openntpd_conf: '{{ {
     "FreeBSD": "/usr/local/etc/ntpd.conf",
     "Linux": "/etc/ntpd.conf",
-  }[ansible_system] | mandatory }}'
+  }[ansible_facts["system"]] | mandatory }}'
 
 openntpd_listen: []
 openntpd_servers:

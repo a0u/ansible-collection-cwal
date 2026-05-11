@@ -5,5 +5,5 @@
     name: '{{ hostname }}'
   when:
     - 'not (hostname | ansible.utils.ipaddr)'
-    - 'ansible_distribution != "FreeBSD"'
+    - 'ansible_facts["distribution"] != "FreeBSD"'
   tags: 'hostname'

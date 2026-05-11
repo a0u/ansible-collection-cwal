@@ -10,4 +10,4 @@
   tags: 'bitlbee'
 
 - import_tasks: 'rc.yml'
-  when: 'ansible_distribution == "FreeBSD"'
+  when: 'ansible_facts["distribution"] == "FreeBSD"'

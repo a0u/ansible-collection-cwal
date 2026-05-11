@@ -5,5 +5,5 @@
     state: 'present'
     conf: '{{ loader | mandatory }}'
     file: '/boot/loader.conf'
-  when: 'ansible_distribution == "FreeBSD" and (loader | default())'
+  when: 'ansible_facts["distribution"] == "FreeBSD" and loader is defined'
   tags: 'loader'

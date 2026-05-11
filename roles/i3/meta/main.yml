@@ -8,7 +8,7 @@ dependencies:
           - 'FontPath "{{ {
                 "FreeBSD": "/usr/local/share/fonts/terminus-font/",
                 "Gentoo": "/usr/share/fonts/terminus/",
-              }[ansible_distribution] | mandatory }}"'
+              }[ansible_facts["distribution"]] | mandatory }}"'
     tags: 'i3'
   - role: 'pkg'
     all:

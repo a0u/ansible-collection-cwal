@@ -79,13 +79,13 @@
   tags: 'poudriere'
 
 - set_fact:
-    poudriere_jail: '{{ ansible_distribution_version | replace(".", "-") }}_{{ ansible_architecture }}'
+    poudriere_jail: '{{ ansible_facts["distribution_version"] | replace(".", "-") }}_{{ ansible_facts["architecture"] }}'
   tags:
     - 'poudriere'
     - 'poudriere:jail'
 
 - name: 'create poudriere jail'
-  command: 'poudriere jail -c -j {{ poudriere_jail }} -v {{ ansible_distribution_version }}-RELEASE -a {{ ansible_architecture }} -m http'
+  command: 'poudriere jail -c -j {{ poudriere_jail }} -v {{ ansible_facts["distribution_version"] }}-RELEASE -a {{ ansible_facts["architecture"] }} -m http'
   args:
     creates: '{{ poudriere_basefs }}/jails/{{ poudriere_jail | mandatory }}/COPYRIGHT'
   register: 'poudriere_jail_init'
@@ -109,7 +109,7 @@
 - name: 'create package ABI symlink'
   file:
     src: '{{ poudriere_jail | mandatory }}-{{ poudriere_portstree }}'
-    path: '{{ poudriere_basefs }}/data/packages/{{ ansible_distribution }}:{{ ansible_distribution_major_version }}:{{ ansible_architecture }}'
+    path: '{{ poudriere_basefs }}/data/packages/{{ ansible_facts["distribution"] }}:{{ ansible_facts["distribution_major_version"] }}:{{ ansible_facts["architecture"] }}'
     state: 'link'
     force: true
   tags: 'poudriere:jail'

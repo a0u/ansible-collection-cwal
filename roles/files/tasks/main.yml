@@ -7,7 +7,7 @@
     owner: '{{ item.owner | default("root") }}'
     group: '{{ item.group | default("0") }}'
     mode: '{{ item.mode | default("0644") }}'
-    attributes: '{{ (item.chattr | default()) if (ansible_system == "Linux") }}'
+    attributes: '{{ (item.chattr | default()) if (ansible_facts["system"] == "Linux") }}'
   when: '(item.state | default()) == "empty"'
   loop: '{{ files }}'
   tags: 'files'
@@ -20,7 +20,7 @@
       - '{{ item.chflags if (item.chflags is string) else (item.chflags | unique | join(",")) }}'
       - '{{ item.path | mandatory }}'
   when:
-    - 'ansible_system == "FreeBSD"'
+    - 'ansible_facts["system"] == "FreeBSD"'
     - 'item.chflags is defined'
   loop: '{{ files }}'
   tags: 'files'

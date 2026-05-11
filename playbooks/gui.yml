@@ -7,7 +7,7 @@
   gather_facts: true
   tasks:
     - group_by:
-        key: '{{ ansible_distribution }}'
+        key: '{{ ansible_facts["distribution"] }}'
       tags: 'always'
 
 - hosts: '{{ target | default("gui") }}'
