@@ -7,7 +7,7 @@
 {{ (x | join(', ')) if x is iterable and x is not string else x -}}
 {% endmacro %}
 
-{%- if sudo.aliases is mapping %}
+{%- if sudo.get('aliases') is mapping %}
 
 {% macro alias(dict, type) %}
 {% for name, values in dict | default({}) | dictsort %}
@@ -16,17 +16,17 @@
 {% endmacro -%}
 
 # Host aliases
-{{ alias(sudo.aliases.hosts, 'Host') }}
+{{ alias(sudo.aliases.get('hosts'), 'Host') }}
 # User aliases
-{{ alias(sudo.aliases.users, 'User') }}
+{{ alias(sudo.aliases.get('users'), 'User') }}
 # Cmnd aliases
-{{ alias(sudo.aliases.commands, 'Cmnd') }}
+{{ alias(sudo.aliases.get('commands'), 'Cmnd') }}
 # Runas aliases
-{{ alias(sudo.aliases.runas, 'Runas') }}
+{{ alias(sudo.aliases.get('runas'), 'Runas') }}
 
 {%- endif %}
 
-{%- if sudo.defaults is mapping %}
+{%- if sudo.get('defaults') is mapping %}
 
 {% macro default(dict, type) %}
 {% for scope, params in dict | default({}) | dictsort %}
@@ -35,25 +35,25 @@ Defaults{{ type }}{{ scope }} {{ concat(params) }}
 {% endmacro -%}
 
 # General defaults
-{% for param in sudo.defaults.general | default([]) %}
+{% for param in sudo.get('defaults', {}).get('general', []) %}
 Defaults {{ param }}
 {% endfor %}
 
 # Host defaults
-{{ default(sudo.defaults.hosts, '@') }}
+{{ default(sudo.defaults.get('hosts'), '@') }}
 # User defaults
-{{ default(sudo.defaults.users, ':') }}
+{{ default(sudo.defaults.get('users'), ':') }}
 # Cmnd defaults
-{{ default(sudo.defaults.commands, '!') }}
+{{ default(sudo.defaults.get('commands'), '!') }}
 # Runas defaults
-{{ default(sudo.defaults.runas, '>') }}
+{{ default(sudo.defaults.get('runas'), '>') }}
 
 {%- endif %}
 
-{%- if sudo.userspec is sequence %}
+{%- if sudo.get('userspec') is sequence %}
 
 # User specifications
-{% for level1 in sudo.userspec %}
+{% for level1 in sudo.get('userspec') %}
   {% for user, level2 in level1 | dictsort %}
     {% for dict in level2 %}
       {% for host, cmds in dict | dictsort %}
