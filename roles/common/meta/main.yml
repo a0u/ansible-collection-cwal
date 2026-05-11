@@ -11,7 +11,7 @@ dependencies:
   - role: 'loader'
   - role: 'sysctl'
   - role: 'pkg'
-    all: '{{ pkgs }}'
+    all: '{{ pkgs | default([]) }}'
     when: 'not (bootstrap | default(false) | bool)'
   - role: 'ssh'
   - role: 'sudo'
